@@ -10,6 +10,13 @@ const resolvers = require('./resolvers');
 const server = new ApolloServer({
   typeDefs,
   resolvers,
+  context: (req) => {
+    const token = req.event.headers.authorization || '';
+    console.log('Request token:', token);
+
+    // add the user to the context
+    return { foo: 'bar' };
+  },
 });
 exports.graphqlHandler = server.createHandler({
   cors: {
