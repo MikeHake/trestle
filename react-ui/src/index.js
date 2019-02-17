@@ -7,6 +7,9 @@ import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 
+const DEV_URL = 'https://84trov9yy0.execute-api.us-east-1.amazonaws.com/dev/graphql';
+const LOCAL_URL = 'http://localhost:3000/graphql';
+
 Amplify.configure({
   Auth: {
     mandatorySignIn: true,
@@ -14,6 +17,9 @@ Amplify.configure({
     userPoolId: "us-east-2_uSQ2m25O5",
     identityPoolId: "us-east-2:9d099f29-fae3-475d-b11d-b45f5feff1de",
     userPoolWebClientId: "3vhr9pnl1fijknr995tknv0bba"
+  },
+  API: {
+    graphql_endpoint: DEV_URL
   }
 });
 

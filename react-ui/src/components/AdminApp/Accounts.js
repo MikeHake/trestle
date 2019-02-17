@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import { Card, CardTitle, CardText } from 'react-md';
-import ApiClient from '../../ApiClient';
-import gql from "graphql-tag";
 import LoadingIndicator from "../LoadingIndicator";
+import { API, graphqlOperation } from 'aws-amplify'
 
 export default class Accounts extends Component {
 
@@ -14,30 +13,29 @@ export default class Accounts extends Component {
     };
   }
 
+
+
   async componentDidMount() {
+
+    const ListTenants = `query ListTenants {
+      tenants{
+        id
+        name
+        createDate
+        users {
+          id
+          firstName
+        }
+      }
+    }`;
+
     try {
       this.setState({fetchStatus: 'FETCHING'});
-
-        ApiClient.query({
-          query: gql`
-            query{
-              tenants{
-                id
-                name
-                createDate
-                users {
-                  id
-                  firstName
-                }
-              }
-            }
-          `
-      }).then(result => {
-        console.log('GQL query returned:',result);
-        this.setState({
-          accounts: result.data.tenants,
-          fetchStatus: 'SUCCESS'
-        });
+      const result = await API.graphql(graphqlOperation(ListTenants));
+      console.log("RESULT:",result);
+      this.setState({
+        accounts: result.data.tenants,
+        fetchStatus: 'SUCCESS'
       });
     } catch (e) {
       this.setState({
