@@ -1,6 +1,6 @@
-import React, { Component } from "react";
-import { Route, Switch, withRouter } from "react-router-dom";
-import { Auth } from "aws-amplify";
+import React, {Component} from "react";
+import {Route, Switch, withRouter} from "react-router-dom";
+import {Auth} from "aws-amplify";
 import AppliedRoute from "./utils/AppliedRoute";
 import AuthenticatedRoute from "./utils/AuthenticatedRoute";
 import UnauthenticatedRoute from "./utils/UnauthenticatedRoute";
@@ -12,65 +12,70 @@ import "./App.css";
 
 class App extends Component {
 
-  constructor(props) {
-    super(props);
+    constructor(props) {
+        super(props);
 
-    this.state = {
-      isAuthenticated: false,
-      user: undefined
-    };
-  }
+        this.state = {
+            isAuthenticated: false,
+            user: undefined
+        };
+    }
 
-  async componentDidMount() {
-    Auth.currentUserInfo().then(user => {
-      console.log('App.componentDidMount() user:', user);
-      if(user){
-        this.handleUserAuthenticated(user);
-      }
-    })
-      .catch(err => {
-        console.log('Auth error:', err);
+    async componentDidMount() {
+        Auth.currentSession()
+            .then(data => {
+                console.log('Auth.currentSession():', data);
+            })
+            .catch(err => console.log(err));
+        Auth.currentUserInfo().then(user => {
+            console.log('Auth.currentUserInfo():', user);
+            if (user) {
+                this.handleUserAuthenticated(user);
+            }
+        })
+            .catch(err => {
+                console.log('Auth error:', err);
 
-      });
-  }
+            });
+    }
 
-  handleUserAuthenticated = user => {
-    this.setState({
-      isAuthenticated: true,
-      user: user
-    });
-  }
+    handleUserAuthenticated = user => {
+        this.setState({
+            isAuthenticated: true,
+            user: user
+        });
+    }
 
-  handleLogout = async event => {
-    await Auth.signOut();
+    handleLogout = async event => {
+        await Auth.signOut();
 
-    this.setState({
-      isAuthenticated: false,
-      user: undefined
-    });
+        this.setState({
+            isAuthenticated: false,
+            user: undefined
+        });
 
-    this.props.history.push("/");
-  }
+        this.props.history.push("/");
+    }
 
-  render() {
-    const childProps = {
-      isAuthenticated: this.state.isAuthenticated,
-      handleUserAuthenticated: this.handleUserAuthenticated,
-      handleLogout: this.handleLogout,
-    };
+    render() {
+        const childProps = {
+            isAuthenticated: this.state.isAuthenticated,
+            handleUserAuthenticated: this.handleUserAuthenticated,
+            handleLogout: this.handleLogout,
+        };
 
-    return (
-      <div className='App'>
-       
-        <Switch>
-          <AppliedRoute path="/" exact component={Landing} props={childProps} />
-          <UnauthenticatedRoute path="/login" exact component={Login} props={childProps} />
-          <AuthenticatedRoute path="/admin" component={AdminApp} props={childProps} />
-          <Route component={NotFound} />
-        </Switch>
-      </div>
-    );
-  }
+        return (
+            <div className='App'>
+
+                <Switch>
+                    <AppliedRoute path="/" exact component={Landing} props={childProps}/>
+                    <UnauthenticatedRoute path="/login" exact component={Login} props={childProps}/>
+                    <AuthenticatedRoute path="/admin" component={AdminApp} props={childProps}/>
+                    <Route component={NotFound}/>
+                </Switch>
+            </div>
+        );
+    }
 }
 
 export default withRouter(App);

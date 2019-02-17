@@ -85,7 +85,7 @@ export default class Login extends Component {
   loginForm() {
     return (
       <Card style={{ maxWidth: 500 }} className="md-block-centered">
-        <CardTitle title="Login" subtitle="AWS Example App" />
+        <CardTitle title="Login" subtitle="Trestle" />
         <CardText>
           <form className="md-grid" onSubmit={this.submitSignIn}>
             {/* Adding the unused button as an inlineIndicator is a hack to make the email input
@@ -98,7 +98,7 @@ export default class Login extends Component {
               type="email"
               value={this.state.email}
               onChange={this.handleEmailChange}
-              inlineIndicator={<Button></Button>}
+              inlineIndicator={<Button flat></Button>}
             />
             <TextField
               id="password"
@@ -121,7 +121,7 @@ export default class Login extends Component {
   newPasswordForm() {
     return (
       <Card style={{ maxWidth: 500 }} className="md-block-centered">
-        <CardTitle title="New Password Required" subtitle="AWS Example App" />
+        <CardTitle title="New Password Required" subtitle="Trestle" />
         <CardText>
           <form onSubmit={this.submitNewPassword}>
             <TextField

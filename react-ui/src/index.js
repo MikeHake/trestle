@@ -14,15 +14,6 @@ Amplify.configure({
     userPoolId: "us-east-2_uSQ2m25O5",
     identityPoolId: "us-east-2:9d099f29-fae3-475d-b11d-b45f5feff1de",
     userPoolWebClientId: "3vhr9pnl1fijknr995tknv0bba"
-  },
-  API: {
-    endpoints: [
-      {
-        name: 'accounts',
-        endpoint: 'https://arrow-services.frogsonic.com/api',
-        region: 'us-east-2'
-      },
-    ]
   }
 });
 

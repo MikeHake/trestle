@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import { API } from "aws-amplify";
 import { Card, CardTitle, CardText } from 'react-md';
+import ApiClient from '../../ApiClient';
+import gql from "graphql-tag";
 import LoadingIndicator from "../LoadingIndicator";
-// import "./accounts.css";
 
 export default class Accounts extends Component {
 
@@ -17,12 +17,28 @@ export default class Accounts extends Component {
   async componentDidMount() {
     try {
       this.setState({fetchStatus: 'FETCHING'});
-      const response = await API.get("accounts", "/accounts");
-      this.setState({
-        accounts: response.data,
-        fetchStatus: 'SUCCESS'
+
+        ApiClient.query({
+          query: gql`
+            query{
+              tenants{
+                id
+                name
+                createDate
+                users {
+                  id
+                  firstName
+                }
+              }
+            }
+          `
+      }).then(result => {
+        console.log('GQL query returned:',result);
+        this.setState({
+          accounts: result.data.tenants,
+          fetchStatus: 'SUCCESS'
+        });
       });
-   
     } catch (e) {
       this.setState({
         fetchStatus: 'FAIL'
@@ -36,7 +52,7 @@ export default class Accounts extends Component {
     const isLoading = fetchStatus === 'FETCHING';
 
     const accountCards = accounts.map(account => (
-      <Card className="md-cell" key={account.sortKey}>
+      <Card className="md-cell" key={account.id}>
         <CardTitle title={account.name} />
         <CardText>
           <p>Account</p>

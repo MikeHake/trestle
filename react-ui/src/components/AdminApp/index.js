@@ -55,7 +55,7 @@ class AdminApp extends Component {
         render={({ location }) => (
           <NavigationDrawer
             drawerTitle="Menu"
-            toolbarTitle="AWS Example App"
+            toolbarTitle="Trestle"
             // toolbarActions={<KebabMenu id="toolbar-themed-kebab-menu" menuItems = {['Logout']} />}
             toolbarActions={<KebabMenu handleLogout={handleLogout}/>}
             tabletDrawerType={NavigationDrawer.DrawerTypes.PERSISTENT_MINI}
