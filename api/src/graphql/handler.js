@@ -11,9 +11,8 @@ const server = new ApolloServer({
   typeDefs,
   resolvers,
   context: (req) => {
-    const token = req.event.headers.Authorization || '';
-    console.log('Request:', req);
-    console.log('Authorization:', token);
+    // TODO - figure out user and set it on context. See Apollo server docs.
+    console.log('Request:', JSON.stringify(req));
 
     // add the user to the context
     return { foo: 'bar' };

@@ -24,9 +24,7 @@ class App extends Component {
     async componentDidMount() {
         Auth.currentSession()
             .then(session => {
-                // Save token to local storage so it can be used in the Apollo GraphQL client
-                localStorage.setItem("token", session.idToken.jwtToken);
-                console.log('Auth.currentSession() saved to local storage:', session.idToken.jwtToken);
+                console.log('Auth.currentSession():', session);
             })
             .catch(err => console.log(err));
         Auth.currentUserInfo().then(user => {

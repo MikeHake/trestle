@@ -47,12 +47,7 @@ functions:
     events:
       - http:
           path: graphql
-          method: get
-          cors: true
-#          authorizer: aws_iam
-      - http:
-          path: graphql
-          method: post
+          method: any
           cors: true
 #          authorizer: aws_iam
 
