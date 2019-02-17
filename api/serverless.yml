@@ -13,6 +13,11 @@ provider:
   environment:
     DYNAMODB_TABLE: ${self:service}-${opt:stage, self:provider.stage}
   iamRoleStatements:
+    -  Effect: "Allow"
+       Action:
+         - "cognito-idp:ListUsers"
+       Resource:
+         - "*"
     - Effect: Allow
       Action:
         - dynamodb:Query
@@ -36,7 +41,7 @@ custom:
           - table: ${self:provider.environment.DYNAMODB_TABLE}
 
 functions:
-  adminAPI:
+  graphql:
     handler: src/graphql/handler.graphqlHandler
     description: GraphQL API
     events:
@@ -44,10 +49,12 @@ functions:
           path: graphql
           method: get
           cors: true
+          authorizer: aws_iam
       - http:
           path: graphql
           method: post
           cors: true
+          authorizer: aws_iam
 
 resources:
   Resources: ${file(offline/migrations/table.yml)}
