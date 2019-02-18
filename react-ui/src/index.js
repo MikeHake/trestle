@@ -7,7 +7,7 @@ import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 
-const DEV_URL = 'https://84trov9yy0.execute-api.us-east-1.amazonaws.com/dev/graphql';
+const DEV_URL = 'https://u9tj964apa.execute-api.us-east-2.amazonaws.com/dev/graphql';
 const LOCAL_URL = 'http://localhost:3000/graphql';
 
 Amplify.configure({
@@ -19,7 +19,8 @@ Amplify.configure({
     userPoolWebClientId: "3vhr9pnl1fijknr995tknv0bba"
   },
   API: {
-    graphql_endpoint: DEV_URL
+    graphql_endpoint: DEV_URL,
+    graphql_endpoint_iam_region: "us-east-2"
   }
 });
 
