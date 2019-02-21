@@ -1,15 +1,15 @@
 {
-  "name": "trestle-api",
+  "name": "trestle-services",
   "version": "1.0.0",
   "description": "GraphQL Lambda API",
   "scripts": {
     "lint": "eslint --fix src test",
     "predeploy": "yarn test",
-    "deploy": "serverless deploy --domain trestle-api.mikehake.com --enableDomainManager true --aws-profile personal-serverless-admin",
-    "undeploy": "serverless remove --aws-profile personal-serverless-admin",
+    "deploy": "serverless deploy --stage prod --domain trestle-services.mikehake.com --enableDomainManager true --aws-profile personal-serverless-admin",
+    "undeploy": "serverless remove --stage prod --aws-profile personal-serverless-admin",
     "s3Config": "serverless s3deploy",
     "prestart": "yarn test",
-    "start": "serverless offline start --stage dev",
+    "start": "serverless offline start --stage local",
     "pretest": "yarn lint",
     "test": "jest unit",
     "integration-test": "jest integration",
@@ -45,7 +45,6 @@
     "jest-junit": "^6.0.1",
     "serverless": "^1.36.0",
     "serverless-domain-manager": "^2.6.13",
-    "serverless-dynamodb-local": "0.2.30",
     "serverless-offline": "^3.32.2",
     "supertest": "^3.3.0"
   }

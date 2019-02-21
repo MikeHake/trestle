@@ -120,7 +120,7 @@ const invokeGraphqlQuery = query => new Promise(((resolve, reject) => {
 
 const resetTestData = async () => {
   process.env.IS_OFFLINE = true;
-  process.env.DYNAMODB_TABLE = 'trestle-api-dev';
+  process.env.DYNAMODB_TABLE = 'trestle-local';
   await clearDynamoData();
 
   // read test data to load

@@ -7,7 +7,7 @@ import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 
-const PROD_URL = 'https://trestle-api.mikehake.com/graphql';
+const PROD_URL = 'https://trestle-services.mikehake.com/graphql';
 const LOCAL_URL = 'http://localhost:3000/graphql';
 
 var API_URL = PROD_URL;

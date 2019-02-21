@@ -1,0 +1,17 @@
+{
+  "name": "trestle-resources",
+  "version": "1.0.0",
+  "description": "Trestle resources",
+  "license": "UNLICENSED",
+  "scripts": {
+    "deploy": "serverless deploy --stage prod --aws-profile personal-serverless-admin",
+    "undeploy": "serverless remove --stage prod --aws-profile personal-serverless-admin",
+    "s3Config": "serverless s3deploy",
+    "start": "serverless offline start --stage local"
+  },
+  "devDependencies": {
+    "serverless": "^1.36.0",
+    "serverless-dynamodb-local": "0.2.30",
+    "serverless-offline": "^3.32.2"
+  }
+}

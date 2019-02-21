@@ -1,19 +1,18 @@
-service: trestle-api
+service: trestle-services
 
 frameworkVersion: ">=1.1.0 <2.0.0"
 
 plugins:
-  - serverless-dynamodb-local
   - serverless-domain-manager
   - serverless-offline
 
 provider:
   name: aws
   runtime: nodejs8.10
-  stage: prod  # this can be parameterized for multiple stages. For example dev, staging, prod, etc...
+  stage: ${opt:stage}
   region: us-east-2
   environment:
-    DYNAMODB_TABLE: ${self:service}-${opt:stage, self:provider.stage}
+    DYNAMODB_TABLE: trestle-${self:provider.stage}
   iamRoleStatements:
     -  Effect: "Allow"
        Action:
@@ -42,16 +41,6 @@ custom:
     stage: ${self:provider.stage}
     createRoute53Record: true
     enabled: ${self:custom.bool.${opt:enableDomainManager, 'false'}}
-  dynamodb:
-    start:
-      port: 8000
-      inMemory: true
-      migrate: true
-      seed: false
-    seed:
-      domain:
-        sources:
-          - table: ${self:provider.environment.DYNAMODB_TABLE}
 
 functions:
   graphql:
@@ -69,31 +58,7 @@ functions:
           cors: true
           authorizer: aws_iam
 
-# TODO - figure out how to remove duplicate resources. see file offline/migrations/table.yml
-resources:
-  Resources:
-    table:
-      Type: 'AWS::DynamoDB::Table'
-      DeletionPolicy: Retain
-      Properties:
-        TableName: ${self:provider.environment.DYNAMODB_TABLE}
-        AttributeDefinitions:
-          - AttributeName: dataType
-            AttributeType: S
-          - AttributeName: id
-            AttributeType: S
-        KeySchema:
-          - AttributeName: dataType
-            KeyType: HASH
-          - AttributeName: id
-            KeyType: RANGE
-        ProvisionedThroughput:
-          ReadCapacityUnits: 5
-          WriteCapacityUnits: 5
-
 package:
   exclude:
-    - node_modules/dynamodb-localhost/**
-    - node_modules/serverless-dynamodb-local/**
     - node_modules/serverless-offline/**
     - test/**
