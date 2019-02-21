@@ -4,12 +4,13 @@ frameworkVersion: ">=1.1.0 <2.0.0"
 
 plugins:
   - serverless-dynamodb-local
+  - serverless-domain-manager
   - serverless-offline
 
 provider:
   name: aws
   runtime: nodejs8.10
-  stage: ${opt:stage, 'dev'}
+  stage: prod  # this can be parameterized for multiple stages. For example dev, staging, prod, etc...
   region: us-east-2
   environment:
     DYNAMODB_TABLE: ${self:service}-${opt:stage, self:provider.stage}
@@ -30,6 +31,17 @@ provider:
       Resource: "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.DYNAMODB_TABLE}"
 
 custom:
+  # The following lines are for deploying the service with a custom domain
+  # name via the serverless-domain-manager plugin. Please see README.md
+  # for more details on custom domain name mapping
+  bool:
+    true: true
+    false: false
+  customDomain:
+    domainName: ${opt:domain, 'invalid.com'}
+    stage: ${self:provider.stage}
+    createRoute53Record: true
+    enabled: ${self:custom.bool.${opt:enableDomainManager, 'false'}}
   dynamodb:
     start:
       port: 8000
@@ -78,15 +90,6 @@ resources:
         ProvisionedThroughput:
           ReadCapacityUnits: 5
           WriteCapacityUnits: 5
-    GatewayResponseDefault4XX:
-      Type: 'AWS::ApiGateway::GatewayResponse'
-      Properties:
-        ResponseParameters:
-          gatewayresponse.header.Access-Control-Allow-Origin: "'*'"
-          gatewayresponse.header.Access-Control-Allow-Headers: "'*'"
-        ResponseType: DEFAULT_4XX
-        RestApiId:
-          Ref: 'ApiGatewayRestApi'
 
 package:
   exclude:

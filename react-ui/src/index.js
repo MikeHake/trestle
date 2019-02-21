@@ -7,8 +7,18 @@ import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 
-const DEV_URL = 'https://u9tj964apa.execute-api.us-east-2.amazonaws.com/dev/graphql';
+const PROD_URL = 'https://trestle-api.mikehake.com/graphql';
 const LOCAL_URL = 'http://localhost:3000/graphql';
+
+var API_URL = PROD_URL;
+if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
+  // dev
+  API_URL = LOCAL_URL;
+  console.log("DEV API:",API_URL);
+} else {
+  // production
+  console.log("PROD API:", API_URL)
+}
 
 Amplify.configure({
   Auth: {
@@ -19,7 +29,7 @@ Amplify.configure({
     userPoolWebClientId: "3vhr9pnl1fijknr995tknv0bba"
   },
   API: {
-    graphql_endpoint: DEV_URL,
+    graphql_endpoint: API_URL,
     graphql_endpoint_iam_region: "us-east-2"
   }
 });
