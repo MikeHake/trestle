@@ -1,0 +1,6 @@
+TODO:
+
+
+- Add GQL logic to get current user
+- Add info in readme on how to debug offline with intellij
+- Use serverless cross stack references instead of hardcoded DynamoDB table name.
