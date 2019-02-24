@@ -9,6 +9,7 @@ import * as serviceWorker from './serviceWorker';
 
 const PROD_URL = 'https://trestle-services.mikehake.com/graphql';
 const LOCAL_URL = 'http://localhost:3000/graphql';
+//const LOCAL_URL = 'https://trestle-services.mikehake.com/graphql';
 
 var API_URL = PROD_URL;
 if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {

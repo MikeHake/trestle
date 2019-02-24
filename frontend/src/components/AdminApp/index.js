@@ -8,28 +8,18 @@ import {
 import NavLink from './NavLink';
 import AppliedRoute from "../../utils/AppliedRoute";
 
-import Accounts from './Accounts';
+import Tenants from './Tenants';
 import Page1 from './Page1';
-import Page2 from './Page2';
-import Page3 from './Page3';
 
 const navItems = [{
   exact: true,
-  label: 'Accounts',
+  label: 'Tenants',
   to: '/admin',
-  icon: 'home',
+  icon: 'people',
 }, {
   label: 'Page 1',
   to: '/admin/page-1',
   icon: 'bookmark',
-}, {
-  label: 'Page 2',
-  to: '/admin/page-2',
-  icon: 'donut_large',
-}, {
-  label: 'Page 3',
-  to: '/admin/page-3',
-  icon: 'flight_land',
 }];
 
 const KebabMenu = ({ className, handleLogout }) => (
@@ -64,10 +54,8 @@ class AdminApp extends Component {
           >
           {/* adding location as a prop on the switch prevents odd behavior with componentDidMount() being called twice */}
             <Switch key={location.key} location={location}>
-              <AppliedRoute exact path="/admin" location={location} component={Accounts} props={childProps} />
+              <AppliedRoute exact path="/admin" location={location} component={Tenants} props={childProps} />
               <AppliedRoute path="/admin/page-1" location={location} component={Page1} props={childProps} />
-              <AppliedRoute path="/admin/page-2" location={location} component={Page2} props={childProps} />
-              <AppliedRoute path="/admin/page-3" location={location} component={Page3} props={childProps} />
             </Switch>
           </NavigationDrawer>
         )}
