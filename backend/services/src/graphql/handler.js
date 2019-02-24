@@ -2,12 +2,13 @@ const { ApolloServer } = require('apollo-server-lambda');
 const AWS = require('aws-sdk');
 const typeDefs = require('./typeDefs');
 const resolvers = require('./resolvers');
+const logger = require('../core/logger');
 
 
 const getCognitoUserDetails = async (event) => {
   if (process.env.IS_OFFLINE) {
     // Cognito auth does not work offline as it requires API Gateway. So mock a user
-    console.log('Offline mode so mocking current user');
+    logger.debug('Offline mode so mocking current user');
     return {
       id: 'abcd-123-defg-123',
       'custom:tenantId': 'MockCorp',
@@ -48,7 +49,7 @@ const createHandler = async () => {
     resolvers,
     context: async (req) => {
       const user = await getCognitoUserDetails(req.event);
-      console.log('Logged in user:', JSON.stringify(user));
+      logger.debug('Logged in user:', JSON.stringify(user));
       return { user };
     },
   });

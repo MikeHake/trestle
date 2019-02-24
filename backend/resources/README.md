@@ -36,7 +36,7 @@ dynamodb.listTables(params, function(err, data) {
 ### Scan entire table:
 ```javascript
 var params = {
-    TableName: 'trestle-resources-prod',
+    TableName: 'trestle-local',
    
 };
 dynamodb.scan(params, function(err, data) {

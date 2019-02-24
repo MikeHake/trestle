@@ -53,13 +53,14 @@ const getTenantUsers = async (tenantId) => {
 };
 
 
-const createTenant = async (name, email) => {
+const createTenant = async (name) => {
   const id = uuidv4();
+  const createDate = (new Date()).toISOString().substring(0, 10);
   const data = {
     id,
     dataType: dataTypes.TENANT,
     name,
-    email,
+    createDate,
   };
 
   await put(data);

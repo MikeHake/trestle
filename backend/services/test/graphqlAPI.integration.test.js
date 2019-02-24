@@ -26,11 +26,40 @@ describe('Tenant Type', () => {
     expect(result.body.errors).toBeUndefined();
     expect(result.statusCode).toEqual(200);
     const { tenants } = result.body.data;
-    console.log(JSON.stringify(tenants));
     expect(tenants.length).toEqual(2);
 
     const acmeTenant = tenants.find(item => item.name === 'ACME');
     expect(acmeTenant.name).toBe('ACME');
     expect(acmeTenant.users.length).toBe(2);
+  });
+
+  test('Create New Tenant', async () => {
+    const mutation = `mutation {
+      createTenant(name: "ABC Inc."){
+        id
+        name
+        createDate
+      }
+    }`;
+
+    const result = await TestUtils.invokeGraphqlQuery(mutation);
+    expect(result.body.errors).toBeUndefined();
+    expect(result.statusCode).toEqual(200);
+    const createdTenant = result.body.data.createTenant;
+
+    // Query for new tenant
+    const query = `{
+      tenant(id: "${createdTenant.id}"){
+        id
+        name
+        createDate
+      }
+    }`;
+
+    const queryResult = await TestUtils.invokeGraphqlQuery(query);
+    expect(result.body.errors).toBeUndefined();
+    expect(result.statusCode).toEqual(200);
+    const fetchedTenant = queryResult.body.data.tenant;
+    expect(createdTenant).toEqual(fetchedTenant);
   });
 });
