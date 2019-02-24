@@ -3,11 +3,9 @@ import {
   Button,
   Card,
   CardTitle,
-  CardText,
-  DialogContainer,
-  TextField
+  CardText
 } from 'react-md';
-
+import NewTenantDialog from './NewTenantDialog';
 import LoadingIndicator from "../LoadingIndicator";
 import {API, graphqlOperation} from 'aws-amplify'
 import './Tenants.css';
@@ -29,9 +27,12 @@ export default class Tenants extends PureComponent {
     this.setState({dialogVisible: false});
   };
 
+  handleCreateSuccess = () => {
+    this.setState({dialogVisible: false});
+    this.fetchTenants();
+  }
 
-  async componentDidMount() {
-
+  fetchTenants = async () => {
     const ListTenants = `query ListTenants {
       tenants{
         id
@@ -47,7 +48,7 @@ export default class Tenants extends PureComponent {
     try {
       this.setState({fetchStatus: 'FETCHING'});
       const result = await API.graphql(graphqlOperation(ListTenants));
-      console.log("RESULT:", result);
+      console.log("Tenants.fetchTenants() results:", result);
       this.setState({
         accounts: result.data.tenants,
         fetchStatus: 'SUCCESS'
@@ -58,6 +59,10 @@ export default class Tenants extends PureComponent {
       });
       console.error('ERROR:', e);
     }
+  };
+
+  async componentDidMount() {
+    this.fetchTenants();
   }
 
   render() {
@@ -73,36 +78,6 @@ export default class Tenants extends PureComponent {
       </Card>
     ));
 
-    const actions = [{
-      id: 'dialog-cancel',
-      secondary: true,
-      children: 'Cancel',
-      onClick: this.hide,
-    }, {
-      id: 'dialog-ok',
-      primary: true,
-      children: 'Ok',
-      onClick: this.hide,
-    }];
-
-    const newDialog = (
-      <DialogContainer
-        id="new-tenant-dialog"
-        title="New Tenant"
-        visible={dialogVisible}
-        actions={actions}
-        modal={true}
-        initialFocus='name'
-        focusOnMount={true}
-        containFocus={true}
-        contentClassName="md-grid"
-      >
-        <TextField id="name" label="Name" placeholder="Name" className="md-cell md-cell--12"/>
-        <TextField id="description" label="Description" placeholder="Description" rows={2}
-                   className="md-cell md-cell--12"/>
-      </DialogContainer>
-    );
-
     return (
       <div className="md-grid md-text-container">
         <LoadingIndicator isLoading={isLoading}/>
@@ -111,7 +86,7 @@ export default class Tenants extends PureComponent {
         </h2>
         {accountCards}
         <Button id="add-btn" floating primary onClick={this.show}>add</Button>
-        {newDialog}
+        <NewTenantDialog onCancel={this.hide} onSuccess={this.handleCreateSuccess} visible={dialogVisible}/>
       </div>
     );
   }

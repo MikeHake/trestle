@@ -1,7 +1,10 @@
 TODO:
 
+- UI
+    - Implement ability to create new tenants
 - GQL
     - Add query to get current user
+    - enforce authorization to only view tenants data
 - Add info in readme on how to debug offline with intellij
 - Use serverless cross stack references instead of hardcoded DynamoDB table name.
 
