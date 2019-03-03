@@ -1,6 +1,6 @@
 # Trestle
 
-This is a reference architecture for an enterprise multi tenant web application. The technology stack includes:
+This is a example architecture for a full stack, multi tenant web application. The technology stack includes:
 
 * ReactJS Frontend
 * AWS Lambda hosting a GraphQL API secured behind a AWS API Gateway
@@ -14,7 +14,12 @@ This is a reference architecture for an enterprise multi tenant web application.
 There are countless ways to architect an app and organize a codebase these days, I dont claim this to be better than any other way,
 its just an approach that I have found to be effective and enjoyable to work with.
 
-* Why AWS Lambda?
+* How is the frontend built?
+  * The frontend is a pretty basic ReactJS app. I try to author as little CSS as possible so its using the React-MD
+  (https://react-md.mlaursen.com/) component library which provides a nice Google Material Design look. AWS Amplify
+  (https://aws-amplify.github.io/) is used for all interaction with the backend including AWS Cognito authentication
+  and GraphQL API interaction.
+* Why AWS Lambda for backend?
   * I like AWS Lambda for its simplicity, security, scalability, and cost. Its simple in that I dont need to worry about
   managing a host to run my code. Deployment and even Continuous Deployment is simplified via the tools that are
   provided by Serverless (https://serverless.com/). Security is achieved by integrating AWS API Gateway and AWS Cognito
